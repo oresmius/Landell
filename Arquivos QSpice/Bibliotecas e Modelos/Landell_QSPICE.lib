@@ -1,10 +1,16 @@
-* MCP6022 self-contained dual operational-amplifier model for KiCad/ngspice
+* MCP6022/MCP6024 self-contained operational-amplifier models for QSPICE
 * Contains the official Microchip MCP6021 single-channel macromodel below,
-* followed by an eight-pin dual-channel MCP6022 wrapper.
+* followed by package wrappers for the dual MCP6022 and quad MCP6024.
 *
 * MCP6022 physical pin order:
 *   1 OUTA   2 INA-   3 INA+   4 VSS
 *   5 INB+   6 INB-   7 OUTB   8 VDD
+*
+* MCP6024 physical pin order:
+*   1 OUTA   2 INA-   3 INA+   4 VDD
+*   5 INB+   6 INB-   7 OUTB   8 OUTC
+*   9 INC-  10 INC+  11 VSS   12 IND+
+*  13 IND-  14 OUTD
 *
 * QSPICE compatibility adjustments:
 *   - Added 1 mOhm series resistance to the internal DC voltage sources.
@@ -207,3 +213,9 @@ CR62 62 0 10N
 XA 3 2 8 4 1 MCP6021
 XB 5 6 8 4 7 MCP6021
 .ENDS MCP6022
+
+* Quad MCP6024 wrapper built from two validated MCP6022 wrappers.
+.SUBCKT MCP6024 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+XAB 1 2 3 11 5 6 7 4 MCP6022
+XCD 8 9 10 11 12 13 14 4 MCP6022
+.ENDS MCP6024
