@@ -219,3 +219,73 @@ XB 5 6 8 4 7 MCP6021
 XAB 1 2 3 11 5 6 7 4 MCP6022
 XCD 8 9 10 11 12 13 14 4 MCP6022
 .ENDS MCP6024
+
+* ============================================================================
+* SN74CBT3253C - unofficial first-order behavioral model for QSpice
+*
+* This is not a transistor-level model and is not supplied by Texas
+* Instruments.  It is intended for functional and first-order timing studies
+* of the Landell QSE commutator.
+*
+* Physical package pin order (matches SN74CBT3253C.qsym):
+*   1=/1OE  2=S1   3=1B4  4=1B3  5=1B2  6=1B1  7=1A  8=GND
+*   9=2A   10=2B1 11=2B2 12=2B3 13=2B4 14=S0 15=/2OE 16=VCC
+*
+* Modelled:
+*   - two bidirectional 4:1 FET multiplexers
+*   - typical Ron = 3 ohm and Roff = 1 Gohm
+*   - approximate port capacitances: common A = 14 pF, each B = 5.5 pF
+*   - active-low output enables and a simplified 1.5 V logic threshold
+*   - approximately 6.2 ns uniform select-to-switch delay at nominal 5 V
+*   - switches disabled while VCC is below 3.5 V
+*
+* Not modelled:
+*   - channel-to-channel timing skew, charge injection, crosstalk
+*   - nonlinear Ron versus signal voltage, active undershoot protection
+*   - exact break-before-make/overlap behavior and supply current
+* ============================================================================
+
+.MODEL CBT3253_SW SW(Ron=3 Roff=1G Vt=2.5 Vh=0.1)
+
+.SUBCKT CBT3253_1MUX B1 B2 B3 B4 A S0 S1 OE VCC GND
+
+* Decode S1:S0.  Relational expressions evaluate to 0 or 1.
+* The VCC term prevents operation with the device unpowered.
+BRAW1 raw1 GND V={5*(V(VCC,GND)>3.5)*(V(OE,GND)<1.5)*(V(S1,GND)<1.5)*(V(S0,GND)<1.5)}
+BRAW2 raw2 GND V={5*(V(VCC,GND)>3.5)*(V(OE,GND)<1.5)*(V(S1,GND)<1.5)*(V(S0,GND)>1.5)}
+BRAW3 raw3 GND V={5*(V(VCC,GND)>3.5)*(V(OE,GND)<1.5)*(V(S1,GND)>1.5)*(V(S0,GND)<1.5)}
+BRAW4 raw4 GND V={5*(V(VCC,GND)>3.5)*(V(OE,GND)<1.5)*(V(S1,GND)>1.5)*(V(S0,GND)>1.5)}
+
+* A 1 kohm / 8.45 pF control network reaches the switch threshold after
+* about 6.2 ns, approximating the worst select-to-B value at nominal 5 V.
+* All four paths use the same delay; real-device skew is not specified here.
+RDLY1 raw1 ctl1 1k
+RDLY2 raw2 ctl2 1k
+RDLY3 raw3 ctl3 1k
+RDLY4 raw4 ctl4 1k
+CDLY1 ctl1 GND 8.45p
+CDLY2 ctl2 GND 8.45p
+CDLY3 ctl3 GND 8.45p
+CDLY4 ctl4 GND 8.45p
+
+* Bidirectional analog signal paths.
+SBT1 B1 A ctl1 GND CBT3253_SW
+SBT2 B2 A ctl2 GND CBT3253_SW
+SBT3 B3 A ctl3 GND CBT3253_SW
+SBT4 B4 A ctl4 GND CBT3253_SW
+
+* First-order I/O loading from the data-sheet typical capacitances.
+CA   A  GND 14p
+CB1  B1 GND 5.5p
+CB2  B2 GND 5.5p
+CB3  B3 GND 5.5p
+CB4  B4 GND 5.5p
+
+.ENDS CBT3253_1MUX
+
+.SUBCKT SN74CBT3253C P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 P15 P16
+* First half: 1B1,1B2,1B3,1B4,1A,S0,S1,/1OE,VCC,GND
+XCBT1 P6 P5 P4 P3 P7 P14 P2 P1 P16 P8 CBT3253_1MUX
+* Second half: 2B1,2B2,2B3,2B4,2A,S0,S1,/2OE,VCC,GND
+XCBT2 P10 P11 P12 P13 P9 P14 P2 P15 P16 P8 CBT3253_1MUX
+.ENDS SN74CBT3253C
