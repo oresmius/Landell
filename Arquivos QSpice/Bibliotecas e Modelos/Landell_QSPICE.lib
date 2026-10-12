@@ -233,19 +233,22 @@ XCD 8 9 10 11 12 13 14 4 MCP6022
 *
 * Modelled:
 *   - two bidirectional 4:1 FET multiplexers
-*   - typical Ron = 3 ohm and Roff = 1 Gohm
+*   - representative Ron = 5 ohm near the Landell 2.5 V signal bias
+*   - Roff = 1 Gohm for numerical isolation only
 *   - approximate port capacitances: common A = 14 pF, each B = 5.5 pF
 *   - active-low output enables and a simplified 1.5 V logic threshold
-*   - approximately 6.2 ns uniform select-to-switch delay at nominal 5 V
+*   - approximately 6.2 ns uniform select-to-switch delay (conservative at 5 V)
 *   - switches disabled while VCC is below 3.5 V
 *
 * Not modelled:
 *   - channel-to-channel timing skew, charge injection, crosstalk
 *   - nonlinear Ron versus signal voltage, active undershoot protection
 *   - exact break-before-make/overlap behavior and supply current
+*   - data-port leakage (IOZ can reach +/-10 uA in the data sheet)
+*     Roff is not a substitute for a worst-case leakage-current test.
 * ============================================================================
 
-.MODEL CBT3253_SW SW(Ron=3 Roff=1G Vt=2.5 Vh=0.1)
+.MODEL CBT3253_SW SW(Ron=5 Roff=1G Vt=2.5 Vh=0.1)
 
 .SUBCKT CBT3253_1MUX B1 B2 B3 B4 A S0 S1 OE VCC GND
 
@@ -256,17 +259,15 @@ BRAW2 raw2 GND V={5*(V(VCC,GND)>3.5)*(V(OE,GND)<1.5)*(V(S1,GND)<1.5)*(V(S0,GND)>
 BRAW3 raw3 GND V={5*(V(VCC,GND)>3.5)*(V(OE,GND)<1.5)*(V(S1,GND)>1.5)*(V(S0,GND)<1.5)}
 BRAW4 raw4 GND V={5*(V(VCC,GND)>3.5)*(V(OE,GND)<1.5)*(V(S1,GND)>1.5)*(V(S0,GND)>1.5)}
 
-* A 1 kohm / 8.45 pF control network reaches the switch threshold after
-* about 6.2 ns, approximating the worst select-to-B value at nominal 5 V.
-* All four paths use the same delay; real-device skew is not specified here.
-RDLY1 raw1 ctl1 1k
-RDLY2 raw2 ctl2 1k
-RDLY3 raw3 ctl3 1k
-RDLY4 raw4 ctl4 1k
-CDLY1 ctl1 GND 8.45p
-CDLY2 ctl2 GND 8.45p
-CDLY3 ctl3 GND 8.45p
-CDLY4 ctl4 GND 8.45p
+* Pure transport delay preserves the width of every decoded select state.
+* The previous RC approximation acted as a low-pass filter and shortened
+* 8.77 ns states at a 28.5 MHz commutation rate.  The uniform 6.2 ns value
+* is the data-sheet maximum for select-to-B at VCC = 5 V +/- 0.5 V;
+* the 4 V maximum is 5.8 ns.  Real-device skew is not specified here.
+BDLY1 ctl1 GND V={delay(V(raw1,GND),6.2n)}
+BDLY2 ctl2 GND V={delay(V(raw2,GND),6.2n)}
+BDLY3 ctl3 GND V={delay(V(raw3,GND),6.2n)}
+BDLY4 ctl4 GND V={delay(V(raw4,GND),6.2n)}
 
 * Bidirectional analog signal paths.
 SBT1 B1 A ctl1 GND CBT3253_SW
@@ -274,12 +275,14 @@ SBT2 B2 A ctl2 GND CBT3253_SW
 SBT3 B3 A ctl3 GND CBT3253_SW
 SBT4 B4 A ctl4 GND CBT3253_SW
 
-* First-order I/O loading from the data-sheet typical capacitances.
-CA   A  GND 14p
-CB1  B1 GND 5.5p
-CB2  B2 GND 5.5p
-CB3  B3 GND 5.5p
-CB4  B4 GND 5.5p
+* Diagnostic: fixed shunt port capacitances are temporarily disabled.
+* The data-sheet Cio values cannot be treated as independent capacitors to
+* ground during commutation without producing artificial charge sharing.
+* CA   A  GND 14p
+* CB1  B1 GND 5.5p
+* CB2  B2 GND 5.5p
+* CB3  B3 GND 5.5p
+* CB4  B4 GND 5.5p
 
 .ENDS CBT3253_1MUX
 
@@ -289,3 +292,356 @@ XCBT1 P6 P5 P4 P3 P7 P14 P2 P1 P16 P8 CBT3253_1MUX
 * Second half: 2B1,2B2,2B3,2B4,2A,S0,S1,/2OE,VCC,GND
 XCBT2 P10 P11 P12 P13 P9 P14 P2 P15 P16 P8 CBT3253_1MUX
 .ENDS SN74CBT3253C
+
+* ============================================================================
+* OPA2836ID (SOIC-8) -- Texas Instruments PSpice model SLOM242
+* Source: https://www.ti.com/lit/zip/SLOM242
+* The TI macromodel below describes one amplifier with a PD terminal.
+* Only its .SUBCKT/.ENDS identifier was renamed to OPA2836_TI_CH;
+* line endings and whitespace were normalized to ASCII.
+* The SOIC-8 package has two channels and no external PD pins.
+* The OPA2836 package wrapper below ties each internal PD input to VS+.
+* The source model describes typical behavior, with SR characterized at
+* gain 2 and 2 Vpp; it is not a transistor-level or package parasitic model.
+* ============================================================================
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part:           OPA2836
+* DUAL, VERY LOW-POWER, RAIL-TO-RAIL OUT, NEGATIVE RAIL IN, VFB OP AMP
+* Date:           2011-09-12
+* Model Type:     PSpice
+* Simulator:      PSpice 16.2.0.p001
+* Datasheet:      SLOS712 - January 2011
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 :
+* Release to Web
+*
+*****************************************************************************
+* The OPA2836 Macro Model represents the following parameters for
+* a 5-V Application:
+* AC small-signal response, input-referred voltage noise, the quiescent and PD
+* currents, output swing, input offset voltage, input bias current, PSRR and
+* CMRR, the SR is closed to the measured value only at G=2, Vout=2Vpp
+* and it remains constant for any output amplitude or gain setting.
+*
+* For any convergence problems, it is suggested to set the following simulation
+* options:
+* VNTOL:   10u
+* ABSTOL:  10n
+* ITL1:   1500
+* ITL2:    400
+* ITL4:    400
+*****************************************************************************
+*
+*****************************************************************************
+* SUBCKT OPA2836 INP INN VCC  VEE OUT PD
+* ENDS
+*****************************************************************************
+*
+*$
+.SUBCKT OPA2836_TI_CH INP INN VCC  VEE OUT PD
+Egnd          GND_FLOAT 0 POLY(2) VCC 0 VEE 0  0  0.5  0.5
+E_E1          VCC_BUF GND_FLOAT VCC GND_FLOAT 1
+E_E2          VEE_BUF GND_FLOAT VEE GND_FLOAT 1
+R_Rinp        INP INP1  1 TC=0,0
+R_Rinn        INN INN1  1 TC=0,0
+V_Vos         INP2 INP_CMRR 10uVdc
+C_Cinp        GND_FLOAT INP1  200f  TC=0,0
+C_Cinn        GND_FLOAT INN1  200f  TC=0,0
+X_U12         INP1 INP2 vnse
+*
+*
+X_Upsrr       N02795 GND_FLOAT INN1 INN2   VCVS_LIMIT  PARAMS:
++             GAIN=-1 VPOS=20M  VNEG=-20M
+*
+G_G2          GND_FLOAT N02795 VCC VEE 692n
+R_Rpsr        N02795  N027510    1 TC=0,0
+L_Lpsr        N027510 GND_FLOAT  2uH
+E_Ecmrr       INN2 INN3 N01819 GND_FLOAT 1
+G_G1          GND_FLOAT N01819 INP_CMRR GND_FLOAT 468n
+R_Rcmr        N01819  N013640    1 TC=0,0
+L_Lcmr        N013640 GND_FLOAT  560nH
+X_U9          VCC VEE PD VIMON GND_FLOAT INP2 INN1 HPA_PD_I  PARAMS:
++             VTH=1.4 IMAX=1e-3 IMIN=3N IIBP=0.55U IIBN=0.55U
+*
+V_V1          VCC      N08751   2.09Vdc
+V_V4          N08964   VEE      0.74Vdc
+X_Ud1         INP_CMRR N08751   D_ideal
+X_Ud2         INN3     N08751   D_ideal
+X_Ud3         N08964   INP_CMRR D_ideal
+X_Ud4         N08964   INN3     D_ideal
+*
+*
+X_Ug0         INP_CMRR INN3 GND_FLOAT N13447 VCCS_LIMIT PARAMS:
++             GAIN=100e-6  IPOS=0.5 INEG=-0.5
+*
+X_Ug4         N13447  GND_FLOAT GND_FLOAT OVER_CLAMP VCCS_LIMIT PARAMS:
++             GAIN=1.48E-3 IPOS=0.1 INEG=-0.105
+*X_U4          INP INN GND_FLOAT N13447 GND_FLOAT GND_FLOAT OVER_CLAMP Dyn_SR
+*+  PARAMS: GAIN=3E-3 IDEFAULT=0.27 VOS=13U
+*
+*
+X_U1          GND_FLOAT  N13447    RNOISELESS PARAMS: R=1e6
+X_U2          OVER_CLAMP GND_FLOAT RNOISELESS PARAMS: R=7.2e6
+X_U3          VSENSE     GND_FLOAT RNOISELESS PARAMS: R=1e6
+X_U5          GND_FLOAT  P0Z       RNOISELESS PARAMS: R=1e6
+X_U6          P0ZP1      GND_FLOAT RNOISELESS PARAMS: R=1e6
+X_U7          CLAW_CLAMP GND_FLOAT RNOISELESS PARAMS: R=1e3
+X_U8          CL_CLAMP   GND_FLOAT RNOISELESS PARAMS: R=1e3
+*
+G_G3          GND_FLOAT  VSENSE     OVER_CLAMP GND_FLOAT 1u
+G_G4          GND_FLOAT  P0Z        VSENSE     GND_FLOAT 1u
+G_G5          GND_FLOAT  P0ZP1      P0Z        GND_FLOAT 1u
+G_G6          GND_FLOAT  CLAW_CLAMP P0ZP1      GND_FLOAT 1m
+G_G7          GND_FLOAT  CL_CLAMP   CLAW_CLAMP GND_FLOAT 1m
+*
+C_Cc          OVER_CLAMP GND_FLOAT  178.3p  TC=0,0
+C_Cc1         P0ZP1      GND_FLOAT  0.548f  TC=0,0
+C_Cc2         CLAW_CLAMP GND_FLOAT  137f    TC=0,0
+C_Cc3         GND_FLOAT  GND_FLOAT  4.1f    TC=0,0
+R_R2          GND_FLOAT  N107583    1G      TC=0,0
+R_R3          GND_FLOAT  N127440    1G      TC=0,0
+X_U10         CL_CLAMP   GND_FLOAT PD N118253 GND_FLOAT VCC VEE HPA_PD_SGNL PARAMS:
++             GAIN=1
+Ethd          VCLP GND_FLOAT POLY(1) N118253 GND_FLOAT 0  1  0 0
+*
+*
+*** Output Impedance
+R_Uz_Rg1      GND_FLOAT Uz_N36964  10e6 TC=0,0
+R_Uz_Rf1      Uz_N36964 Uz_VZO_1   10e6 TC=0,0
+R_Uz_Rg2      Uz_VZO_2  Uz_N37614  1e6  TC=0,0
+R_Uz_Rf2      Uz_N37614 Uz_VZO_3   1e6  TC=0,0
+X_Uz_Uamp1    VCLP Uz_N36964 Uz_VZO_1 GND_FLOAT VCVS_LIMIT
++             PARAMS:  GAIN=1e6 VPOS=6e4 VNEG=-6e4
+X_Uz_Uamp2    GND_FLOAT Uz_N37614 Uz_VZO_3 GND_FLOAT VCVS_LIMIT
++             PARAMS:GAIN=1e6 VPOS=6e4 VNEG=-6e4
+E_Uz_E1       Uz_VZO_2 GND_FLOAT Uz_VZO_1 Uz_VZO_4 -1
+X_Uz_S1       N107583 GND_FLOAT Uz_N45387 Uz_VZO_3 Zout_Uz_S1
+X_Uz_S2       N107583 GND_FLOAT Uz_N45507 Uz_VZO_3 Zout_Uz_S2
+R_Uz_Ra       Uz_N45387 Uz_VZO_4  10 TC=0,0
+R_Uz_Rb       Uz_N45507 Uz_VZO_4  10 TC=0,0
+R_Uz_Rm       Uz_VZO_3  Uz_VZO_4  10 TC=0,0
+X_Uz_H1       Uz_VZO_4 N105089 VIMON GND_FLOAT Zout_Uz_H1
+*** End of Output Impedance
+*
+*
+X_U11         VCC VEE PD N105089 OUT GND_FLOAT dyn_curr
+*
+*
+*** Output Voltage Clamp
+V_Uvcl_Vclo1  VCC_BUF Uvcl_N498511 0.94Vdc
+V_Uvcl_Vclo2  Uvcl_N50894 VEE_BUF  0.94Vdc
+X_Uvcl_Uclo2  Uvcl_N50894 OVER_CLAMP  D_ideal
+X_Uvcl_Uclo1  OVER_CLAMP Uvcl_N498511 D_ideal
+*** End of Output Voltage Clamp
+*
+*** Current Limit
+X_Ucl_Ucl1    Ucl_N50037 Ucl_N01131 D_ideal
+X_Ucl_Ucl2    Ucl_N01226 Ucl_N50037 D_ideal
+R_Ucl_Rcl1    Ucl_N01131 N127440     1   TC=0,0
+R_Ucl_Rcl2    N127440    Ucl_N01226  1   TC=0,0
+R_Ucl_Rcl3    Ucl_N50037 CL_CLAMP   0.01 TC=0,0
+C_Ucl_Ccl1    Ucl_N01131 GND_FLOAT   1p  TC=0,0
+C_Ucl_Ccl2    GND_FLOAT  Ucl_N01226  1p  TC=0,0
+V_Ucl_Vclp    Ucl_N00774 GND_FLOAT  45Vdc
+V_Ucl_Vcln    Ucl_N00760 GND_FLOAT -45Vdc
+E_Ucl_E1      Ucl_N01131 GND_FLOAT Ucl_N00774 VIMON 100
+E_Ucl_E2      Ucl_N01226 GND_FLOAT Ucl_N00760 VIMON 100
+*** End of Current Limit
+*
+.ends OPA2836_TI_CH
+*
+*
+*$
+.subckt Zout_Uz_S2 1 2 3 4
+S_Uz_S2       3 4 1 2 _Uz_S2
+RS_Uz_S2      1 2 1G
+.MODEL       _Uz_S2 VSWITCH Roff=10e6 Ron=1.0 Voff=0.1V Von=-0.1V
+.ends Zout_Uz_S2
+*$
+*
+.subckt Zout_Uz_S1 1 2 3 4
+S_Uz_S1      3 4 1 2 _Uz_S1
+RS_Uz_S1     1 2 1G
+.MODEL      _Uz_S1 VSWITCH Roff=10e6 Ron=1.0 Voff=-0.1V Von=0.1V
+.ends Zout_Uz_S1
+*$
+*
+.subckt Zout_Uz_H1 1 2 3 4
+H_Uz_H1       3 4 VH_Uz_H1 1e3
+VH_Uz_H1      1 2 0V
+.ends Zout_Uz_H1
+*$
+*
+.subckt D_ideal a c
+d1 a c dnom
+.model dnom d
++ tt=1e-011
++ cjo=1e-018
++ is=1e-016
++ rs=0.001
+.ends D_ideal
+*$
+*
+.SUBCKT VNSE 1 2
+**************************
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* NLF - NV/RHZ AT (1/F) FREQ
+* FLW - FREQ FOR (1/F) VAL
+* NVR - NV/RHZ FLATBAND
+**************************
+* START CALC VALS
+.PARAM NLF=45
+.PARAM FLW=4
+.PARAM NVR=4.7
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+* END PROG NSE NANOV/RT-HZ*$
+*
+*$
+*
+.SUBCKT FEMT 1 2 PARAMS: NLFF=25e3 FLWF=260 NVRF=3530
+**************************
+* BEGIN SETUP OF NOISE GEN - FEMPTOAMPS/RT-HZ
+* INPUT THREE VARIABLES
+* NLFF - SET UP INSE 1/F
+* FLWF - FA/RHZ AT 1/F FREQ
+* NVRF - FA/RHZ FLATBAND
+**************************
+* START CALC VALS
+.PARAM GLFF={PWR(FLWF,0.25)*NLFF/1164}
+.PARAM RNVF={1.184*PWR(NVRF,2)}
+.MODEL DVNF D KF={PWR(FLWF,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVNF
+D2 8 0 DVNF
+E1 3 6 7 8 {GLFF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNVF}
+R5 5 0 {RNVF}
+R6 3 4 1E9
+R7 4 0 1E9
+G1 1 2 3 4 1E-6
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS FEMT
+*$
+
+.subckt rnoiseless a b PARAMS: R=1k
+*H_H1 c b VH_H1 {R}
+*VH_H1 a c 0
+ERES a 3 VALUE = { I(VSENSE) * R }
+Rdummy 30 3 1
+VSENSE 30 b DC 0V
+.ends
+*$
+*
+*
+*Voltage Controlled Source with Limits
+.subckt VCCS_Limit VCP VCN IOUTP IOUTN PARAMS: Gain = 1.7e-3
++ Ipos = 0.100 Ineg = -0.165
+G1 IOUTP IOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Ipos,Ineg)}
+.ends VCCS_Limit
+*$
+*
+.subckt VCVS_Limit VCP VCN VOUTP VOUTN PARAMS: Gain = -1
++ Vpos = 20m Vneg = -20m
+E1 VOUTP VOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Vpos,Vneg)}
+.ends VCVS_Limit
+*$
+*$
+.SUBCKT HPA_PD_I VCC VEE PD Vimon AGND Ninp Ninn PARAMS: Vth = 1.4 Imax = 1e-3  Imin = 3n
++       IIBP= 0.55u  IIBN= 0.56u
+*GBIAS    VCC  VEE    VALUE = {IF(V(PD)   >= (V(VEE)+Vth),Imax,Imin)}
+GBIAS     VCC  VEE    VALUE = {IF(V(PD)   >= V(VCC),Imax,Imin)}
+Ebuf      VDD  0      VCC  0   1
+Ginp      VDD  Ninp   VALUE = {IF(V(PD)   >= V(VCC),IIBP,0)}
+Ginn      VDD  Ninn   VALUE = {IF(V(PD)   >= V(VCC),IIBN,0)}
+.ENDS
+*$
+.SUBCKT HPA_PD_Sgnl  CP  CN  DIS  VP  VN  VCC VEE PARAMS:  GAIN = 1
+EVCVS  VP  VN  VALUE = {IF(V(DIS,VEE) >= 1.4,V(CP,CN)*GAIN,0)}
+.ENDS HPA_PD_Sgnl
+*$
+*$
+.SUBCKT Dyn_Curr VCC VEE PD NS1 NS2 AGND
+VRO1      NS1   NS2  0
+DPASSTOP  VCC   NET1  Ddefault    1
+DBLOCKTOP AGND  NET1  Ddefault    1
+FGTOP     NET1  AGND  VRO1  1
+FBOTT     NET2  AGND  VRO1  1
+DBLOCKB   NET2  AGND  Ddefault    1
+DPASSB    NET2  VEE   Ddefault    1
+*SW2    NS4 VEE  PD  0  VSWITCH_1
+.MODEL Ddefault D IS=8.000E-16   RS=5  BV=6
+.ENDS
+*$
+*$
+.SUBCKT Dyn_SR INP INN AGND VCP VCN IOUTP IOUTN PARAMS: Gain = 1.7e-3
++ Idefault=0.1 Vos=50e-6  Factor1=1
+* For inverting configuration
+*Gt1 N1  0  VALUE={ IF( ABS(V(INP,INN)) <= Vos, Idefault, 0 ) }
+*
+* For non-inverting configuration
+*Gt2 N1  0  VALUE={ABS(TANH(V(INN,AGND)/0.65)/4.45)}
+*Gt2 N1  0  VALUE={-0.0671 + 0.4629*ABS(V(INN,AGND)) + -0.2433*V(INN,AGND)^2
+*+ 0.0425*ABS(V(INN,AGND))^3}
+*Gt2 N1  0  VALUE={ 0.1816 + 0.0465*ABS(V(INN,AGND)) }
+
+
+*Gt2 N1  0  VALUE={ 0.11 + 0.0465*ABS(V(INN,AGND)) }
+*
+Rt1 N1  N2 1k
+Vse N2  0  DC 0V
+*
+*G1 IOUTP IOUTN VALUE={LIMIT(Gain*V(VCP,VCN),abs(1*I(Vse)),-abs(1.1*I(Vse)))}
+G1 IOUTP IOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Idefault,-Idefault)}
+.ENDS Dyn_SR
+*$
+
+* OPA2836ID physical pin order: 1 OUT1, 2 IN1-, 3 IN1+, 4 VS-,
+*                             5 IN2+, 6 IN2-, 7 OUT2, 8 VS+.
+.SUBCKT OPA2836 1 2 3 4 5 6 7 8
+XOPA1 3 2 8 4 1 8 OPA2836_TI_CH
+XOPA2 5 6 8 4 7 8 OPA2836_TI_CH
+.ENDS OPA2836

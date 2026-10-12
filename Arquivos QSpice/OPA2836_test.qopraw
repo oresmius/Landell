@@ -1,0 +1,429 @@
+Title: * P:\Landell\Arquivos QSpice\OPA2836_test.qsch
+Date: Sun Oct 11 10:16:18 2026
+Plotname: Operating Point
+Sine Source Angle: V2 0 7000000
+Flags: real
+No. Variables: 304
+No. Points: 1                    
+Command: QSPICE64, Build Oct  6 2026 12:09:27
+.param temp=27
+.alias I(C_CC3•XOPA1•U1) 0A
+.alias I(C_CC3•XOPA2•U1) 0A
+.alias I(FBOTT•X_U11•XOPA2•U1) (1*I(VRO1•X_U11•XOPA2•U1))
+.alias I(FGTOP•X_U11•XOPA2•U1) (1*I(VRO1•X_U11•XOPA2•U1))
+.alias I(FBOTT•X_U11•XOPA1•U1) (1*I(VRO1•X_U11•XOPA1•U1))
+.alias I(FGTOP•X_U11•XOPA1•U1) (1*I(VRO1•X_U11•XOPA1•U1))
+.alias I(R_UCL_RCL3•XOPA2•U1) (100mho*V(ucl_n50037•xopa2•u1,cl_clamp•xopa2•u1))
+.alias I(R_UCL_RCL2•XOPA2•U1) (1mho*V(n127440•xopa2•u1,ucl_n01226•xopa2•u1))
+.alias I(R_UCL_RCL1•XOPA2•U1) (1mho*V(ucl_n01131•xopa2•u1,n127440•xopa2•u1))
+.alias I(R_UZ_RM•XOPA2•U1) (0.1mho*V(uz_vzo_3•xopa2•u1,uz_vzo_4•xopa2•u1))
+.alias I(R_UZ_RB•XOPA2•U1) (0.1mho*V(uz_n45507•xopa2•u1,uz_vzo_4•xopa2•u1))
+.alias I(R_UZ_RA•XOPA2•U1) (0.1mho*V(uz_n45387•xopa2•u1,uz_vzo_4•xopa2•u1))
+.alias I(RS_UZ_S2•X_UZ_S2•XOPA2•U1) (1e-09mho*V(n107583•xopa2•u1,gnd_float•xopa2•u1))
+.alias I(RS_UZ_S1•X_UZ_S1•XOPA2•U1) (1e-09mho*V(n107583•xopa2•u1,gnd_float•xopa2•u1))
+.alias I(R_UZ_RF2•XOPA2•U1) (1e-06mho*V(uz_n37614•xopa2•u1,uz_vzo_3•xopa2•u1))
+.alias I(R_UZ_RG2•XOPA2•U1) (1e-06mho*V(uz_vzo_2•xopa2•u1,uz_n37614•xopa2•u1))
+.alias I(R_UZ_RF1•XOPA2•U1) (1e-07mho*V(uz_n36964•xopa2•u1,uz_vzo_1•xopa2•u1))
+.alias I(R_UZ_RG1•XOPA2•U1) (1e-07mho*V(gnd_float•xopa2•u1,uz_n36964•xopa2•u1))
+.alias I(R_R3•XOPA2•U1) (1e-09mho*V(gnd_float•xopa2•u1,n127440•xopa2•u1))
+.alias I(R_R2•XOPA2•U1) (1e-09mho*V(gnd_float•xopa2•u1,n107583•xopa2•u1))
+.alias I(RDUMMY•X_U8•XOPA2•U1) (1mho*V(30•x_u8•xopa2•u1,3•x_u8•xopa2•u1))
+.alias I(RDUMMY•X_U7•XOPA2•U1) (1mho*V(30•x_u7•xopa2•u1,3•x_u7•xopa2•u1))
+.alias I(RDUMMY•X_U6•XOPA2•U1) (1mho*V(30•x_u6•xopa2•u1,3•x_u6•xopa2•u1))
+.alias I(RDUMMY•X_U5•XOPA2•U1) (1mho*V(30•x_u5•xopa2•u1,3•x_u5•xopa2•u1))
+.alias I(RDUMMY•X_U3•XOPA2•U1) (1mho*V(30•x_u3•xopa2•u1,3•x_u3•xopa2•u1))
+.alias I(RDUMMY•X_U2•XOPA2•U1) (1mho*V(30•x_u2•xopa2•u1,3•x_u2•xopa2•u1))
+.alias I(RDUMMY•X_U1•XOPA2•U1) (1mho*V(30•x_u1•xopa2•u1,3•x_u1•xopa2•u1))
+.alias I(R_RCMR•XOPA2•U1) (1mho*V(n01819•xopa2•u1,n013640•xopa2•u1))
+.alias I(R_RPSR•XOPA2•U1) (1mho*V(n02795•xopa2•u1,n027510•xopa2•u1))
+.alias I(R7•X_U12•XOPA2•U1) (1e-09mho*V(4•x_u12•xopa2•u1,0))
+.alias I(R6•X_U12•XOPA2•U1) (1e-09mho*V(3•x_u12•xopa2•u1,4•x_u12•xopa2•u1))
+.alias I(R5•X_U12•XOPA2•U1) (0.0382342505475145mho*V(5•x_u12•xopa2•u1,0))
+.alias I(R4•X_U12•XOPA2•U1) (0.0382342505475145mho*V(5•x_u12•xopa2•u1,0))
+.alias I(R3•X_U12•XOPA2•U1) (1e-09mho*V(3•x_u12•xopa2•u1,6•x_u12•xopa2•u1))
+.alias I(R2•X_U12•XOPA2•U1) (1e-09mho*V(3•x_u12•xopa2•u1,0))
+.alias I(R1•X_U12•XOPA2•U1) (1e-09mho*V(3•x_u12•xopa2•u1,0))
+.alias I(R_RINN•XOPA2•U1) (1mho*V(n04,inn1•xopa2•u1))
+.alias I(R_RINP•XOPA2•U1) (1mho*V(n03,inp1•xopa2•u1))
+.alias I(R_UCL_RCL3•XOPA1•U1) (100mho*V(ucl_n50037•xopa1•u1,cl_clamp•xopa1•u1))
+.alias I(R_UCL_RCL2•XOPA1•U1) (1mho*V(n127440•xopa1•u1,ucl_n01226•xopa1•u1))
+.alias I(R_UCL_RCL1•XOPA1•U1) (1mho*V(ucl_n01131•xopa1•u1,n127440•xopa1•u1))
+.alias I(R_UZ_RM•XOPA1•U1) (0.1mho*V(uz_vzo_3•xopa1•u1,uz_vzo_4•xopa1•u1))
+.alias I(R_UZ_RB•XOPA1•U1) (0.1mho*V(uz_n45507•xopa1•u1,uz_vzo_4•xopa1•u1))
+.alias I(R_UZ_RA•XOPA1•U1) (0.1mho*V(uz_n45387•xopa1•u1,uz_vzo_4•xopa1•u1))
+.alias I(RS_UZ_S2•X_UZ_S2•XOPA1•U1) (1e-09mho*V(n107583•xopa1•u1,gnd_float•xopa1•u1))
+.alias I(RS_UZ_S1•X_UZ_S1•XOPA1•U1) (1e-09mho*V(n107583•xopa1•u1,gnd_float•xopa1•u1))
+.alias I(R_UZ_RF2•XOPA1•U1) (1e-06mho*V(uz_n37614•xopa1•u1,uz_vzo_3•xopa1•u1))
+.alias I(R_UZ_RG2•XOPA1•U1) (1e-06mho*V(uz_vzo_2•xopa1•u1,uz_n37614•xopa1•u1))
+.alias I(R_UZ_RF1•XOPA1•U1) (1e-07mho*V(uz_n36964•xopa1•u1,uz_vzo_1•xopa1•u1))
+.alias I(R_UZ_RG1•XOPA1•U1) (1e-07mho*V(gnd_float•xopa1•u1,uz_n36964•xopa1•u1))
+.alias I(R_R3•XOPA1•U1) (1e-09mho*V(gnd_float•xopa1•u1,n127440•xopa1•u1))
+.alias I(R_R2•XOPA1•U1) (1e-09mho*V(gnd_float•xopa1•u1,n107583•xopa1•u1))
+.alias I(RDUMMY•X_U8•XOPA1•U1) (1mho*V(30•x_u8•xopa1•u1,3•x_u8•xopa1•u1))
+.alias I(RDUMMY•X_U7•XOPA1•U1) (1mho*V(30•x_u7•xopa1•u1,3•x_u7•xopa1•u1))
+.alias I(RDUMMY•X_U6•XOPA1•U1) (1mho*V(30•x_u6•xopa1•u1,3•x_u6•xopa1•u1))
+.alias I(RDUMMY•X_U5•XOPA1•U1) (1mho*V(30•x_u5•xopa1•u1,3•x_u5•xopa1•u1))
+.alias I(RDUMMY•X_U3•XOPA1•U1) (1mho*V(30•x_u3•xopa1•u1,3•x_u3•xopa1•u1))
+.alias I(RDUMMY•X_U2•XOPA1•U1) (1mho*V(30•x_u2•xopa1•u1,3•x_u2•xopa1•u1))
+.alias I(RDUMMY•X_U1•XOPA1•U1) (1mho*V(30•x_u1•xopa1•u1,3•x_u1•xopa1•u1))
+.alias I(R_RCMR•XOPA1•U1) (1mho*V(n01819•xopa1•u1,n013640•xopa1•u1))
+.alias I(R_RPSR•XOPA1•U1) (1mho*V(n02795•xopa1•u1,n027510•xopa1•u1))
+.alias I(R7•X_U12•XOPA1•U1) (1e-09mho*V(4•x_u12•xopa1•u1,0))
+.alias I(R6•X_U12•XOPA1•U1) (1e-09mho*V(3•x_u12•xopa1•u1,4•x_u12•xopa1•u1))
+.alias I(R5•X_U12•XOPA1•U1) (0.0382342505475145mho*V(5•x_u12•xopa1•u1,0))
+.alias I(R4•X_U12•XOPA1•U1) (0.0382342505475145mho*V(5•x_u12•xopa1•u1,0))
+.alias I(R3•X_U12•XOPA1•U1) (1e-09mho*V(3•x_u12•xopa1•u1,6•x_u12•xopa1•u1))
+.alias I(R2•X_U12•XOPA1•U1) (1e-09mho*V(3•x_u12•xopa1•u1,0))
+.alias I(R1•X_U12•XOPA1•U1) (1e-09mho*V(3•x_u12•xopa1•u1,0))
+.alias I(R_RINN•XOPA1•U1) (1mho*V(n02,inn1•xopa1•u1))
+.alias I(R_RINP•XOPA1•U1) (1mho*V(n03,inp1•xopa1•u1))
+.alias I(G_G7•XOPA2•U1) (0.001mho*V(claw_clamp•xopa2•u1,gnd_float•xopa2•u1))
+.alias I(G_G6•XOPA2•U1) (0.001mho*V(p0zp1•xopa2•u1,gnd_float•xopa2•u1))
+.alias I(G_G5•XOPA2•U1) (1e-06mho*V(p0z•xopa2•u1,gnd_float•xopa2•u1))
+.alias I(G_G4•XOPA2•U1) (1e-06mho*V(vsense•xopa2•u1,gnd_float•xopa2•u1))
+.alias I(G_G3•XOPA2•U1) (1e-06mho*V(over_clamp•xopa2•u1,gnd_float•xopa2•u1))
+.alias I(G_G1•XOPA2•U1) (4.68e-07mho*V(inp_cmrr•xopa2•u1,gnd_float•xopa2•u1))
+.alias I(G_G2•XOPA2•U1) (6.92e-07mho*V(n01,0))
+.alias I(G_G7•XOPA1•U1) (0.001mho*V(claw_clamp•xopa1•u1,gnd_float•xopa1•u1))
+.alias I(G_G6•XOPA1•U1) (0.001mho*V(p0zp1•xopa1•u1,gnd_float•xopa1•u1))
+.alias I(G_G5•XOPA1•U1) (1e-06mho*V(p0z•xopa1•u1,gnd_float•xopa1•u1))
+.alias I(G_G4•XOPA1•U1) (1e-06mho*V(vsense•xopa1•u1,gnd_float•xopa1•u1))
+.alias I(G_G3•XOPA1•U1) (1e-06mho*V(over_clamp•xopa1•u1,gnd_float•xopa1•u1))
+.alias I(G_G1•XOPA1•U1) (4.68e-07mho*V(inp_cmrr•xopa1•u1,gnd_float•xopa1•u1))
+.alias I(G_G2•XOPA1•U1) (6.92e-07mho*V(n01,0))
+.alias I(D1•X_UD1•XOPA1•U1) (1mho*V(d1•x_ud1•xopa1•u1#current))
+.alias I(D1•X_UD2•XOPA1•U1) (1mho*V(d1•x_ud2•xopa1•u1#current))
+.alias I(D1•X_UD3•XOPA1•U1) (1mho*V(d1•x_ud3•xopa1•u1#current))
+.alias I(D1•X_UD4•XOPA1•U1) (1mho*V(d1•x_ud4•xopa1•u1#current))
+.alias I(DPASSB•X_U11•XOPA1•U1) (0.2mho*V(net2•x_u11•xopa1•u1,dpassb•x_u11•xopa1•u1#internal))
+.alias I(DBLOCKB•X_U11•XOPA1•U1) (0.2mho*V(net2•x_u11•xopa1•u1,dblockb•x_u11•xopa1•u1#internal))
+.alias I(DBLOCKTOP•X_U11•XOPA1•U1) (0.2mho*V(gnd_float•xopa1•u1,dblocktop•x_u11•xopa1•u1#internal))
+.alias I(DPASSTOP•X_U11•XOPA1•U1) (0.2mho*V(n01,dpasstop•x_u11•xopa1•u1#internal))
+.alias I(D1•X_UVCL_UCLO2•XOPA1•U1) (1mho*V(d1•x_uvcl_uclo2•xopa1•u1#current))
+.alias I(D1•X_UVCL_UCLO1•XOPA1•U1) (1mho*V(d1•x_uvcl_uclo1•xopa1•u1#current))
+.alias I(D1•X_UCL_UCL1•XOPA1•U1) (1mho*V(d1•x_ucl_ucl1•xopa1•u1#current))
+.alias I(D1•X_UCL_UCL2•XOPA1•U1) (1mho*V(d1•x_ucl_ucl2•xopa1•u1#current))
+.alias I(D1•X_UD1•XOPA2•U1) (1mho*V(d1•x_ud1•xopa2•u1#current))
+.alias I(D1•X_UD2•XOPA2•U1) (1mho*V(d1•x_ud2•xopa2•u1#current))
+.alias I(D1•X_UD3•XOPA2•U1) (1mho*V(d1•x_ud3•xopa2•u1#current))
+.alias I(D1•X_UD4•XOPA2•U1) (1mho*V(d1•x_ud4•xopa2•u1#current))
+.alias I(DPASSB•X_U11•XOPA2•U1) (0.2mho*V(net2•x_u11•xopa2•u1,dpassb•x_u11•xopa2•u1#internal))
+.alias I(DBLOCKB•X_U11•XOPA2•U1) (0.2mho*V(net2•x_u11•xopa2•u1,dblockb•x_u11•xopa2•u1#internal))
+.alias I(DBLOCKTOP•X_U11•XOPA2•U1) (0.2mho*V(gnd_float•xopa2•u1,dblocktop•x_u11•xopa2•u1#internal))
+.alias I(DPASSTOP•X_U11•XOPA2•U1) (0.2mho*V(n01,dpasstop•x_u11•xopa2•u1#internal))
+.alias I(D1•X_UVCL_UCLO2•XOPA2•U1) (1mho*V(d1•x_uvcl_uclo2•xopa2•u1#current))
+.alias I(D1•X_UVCL_UCLO1•XOPA2•U1) (1mho*V(d1•x_uvcl_uclo1•xopa2•u1#current))
+.alias I(D1•X_UCL_UCL1•XOPA2•U1) (1mho*V(d1•x_ucl_ucl1•xopa2•u1#current))
+.alias I(D1•X_UCL_UCL2•XOPA2•U1) (1mho*V(d1•x_ucl_ucl2•xopa2•u1#current))
+Variables:
+	0	V(gnd_float•xopa1•u1)	voltage
+	1	V(n01)	voltage
+	2	V(vcc_buf•xopa1•u1)	voltage
+	3	V(vee_buf•xopa1•u1)	voltage
+	4	V(n03)	voltage
+	5	V(inp1•xopa1•u1)	voltage
+	6	V(n02)	voltage
+	7	V(inn1•xopa1•u1)	voltage
+	8	V(inp2•xopa1•u1)	voltage
+	9	V(inp_cmrr•xopa1•u1)	voltage
+	10	V(7•x_u12•xopa1•u1)	voltage
+	11	V(8•x_u12•xopa1•u1)	voltage
+	12	V(3•x_u12•xopa1•u1)	voltage
+	13	V(6•x_u12•xopa1•u1)	voltage
+	14	V(4•x_u12•xopa1•u1)	voltage
+	15	V(5•x_u12•xopa1•u1)	voltage
+	16	V(inn2•xopa1•u1)	voltage
+	17	V(n02795•xopa1•u1)	voltage
+	18	V(n027510•xopa1•u1)	voltage
+	19	V(inn3•xopa1•u1)	voltage
+	20	V(n01819•xopa1•u1)	voltage
+	21	V(n013640•xopa1•u1)	voltage
+	22	V(vdd•x_u9•xopa1•u1)	voltage
+	23	V(n08751•xopa1•u1)	voltage
+	24	V(n08964•xopa1•u1)	voltage
+	25	V(n13447•xopa1•u1)	voltage
+	26	V(over_clamp•xopa1•u1)	voltage
+	27	V(3•x_u1•xopa1•u1)	voltage
+	28	V(30•x_u1•xopa1•u1)	voltage
+	29	V(3•x_u2•xopa1•u1)	voltage
+	30	V(30•x_u2•xopa1•u1)	voltage
+	31	V(vsense•xopa1•u1)	voltage
+	32	V(3•x_u3•xopa1•u1)	voltage
+	33	V(30•x_u3•xopa1•u1)	voltage
+	34	V(3•x_u5•xopa1•u1)	voltage
+	35	V(30•x_u5•xopa1•u1)	voltage
+	36	V(p0z•xopa1•u1)	voltage
+	37	V(p0zp1•xopa1•u1)	voltage
+	38	V(3•x_u6•xopa1•u1)	voltage
+	39	V(30•x_u6•xopa1•u1)	voltage
+	40	V(claw_clamp•xopa1•u1)	voltage
+	41	V(3•x_u7•xopa1•u1)	voltage
+	42	V(30•x_u7•xopa1•u1)	voltage
+	43	V(cl_clamp•xopa1•u1)	voltage
+	44	V(3•x_u8•xopa1•u1)	voltage
+	45	V(30•x_u8•xopa1•u1)	voltage
+	46	V(n107583•xopa1•u1)	voltage
+	47	V(n127440•xopa1•u1)	voltage
+	48	V(n118253•xopa1•u1)	voltage
+	49	V(vclp•xopa1•u1)	voltage
+	50	V(uz_n36964•xopa1•u1)	voltage
+	51	V(uz_vzo_1•xopa1•u1)	voltage
+	52	V(uz_vzo_2•xopa1•u1)	voltage
+	53	V(uz_n37614•xopa1•u1)	voltage
+	54	V(uz_vzo_3•xopa1•u1)	voltage
+	55	V(uz_vzo_4•xopa1•u1)	voltage
+	56	V(uz_n45387•xopa1•u1)	voltage
+	57	V(uz_n45507•xopa1•u1)	voltage
+	58	V(vimon•xopa1•u1)	voltage
+	59	V(n105089•xopa1•u1)	voltage
+	60	V(net1•x_u11•xopa1•u1)	voltage
+	61	V(net2•x_u11•xopa1•u1)	voltage
+	62	V(uvcl_n498511•xopa1•u1)	voltage
+	63	V(uvcl_n50894•xopa1•u1)	voltage
+	64	V(ucl_n50037•xopa1•u1)	voltage
+	65	V(ucl_n01131•xopa1•u1)	voltage
+	66	V(ucl_n01226•xopa1•u1)	voltage
+	67	V(ucl_n00774•xopa1•u1)	voltage
+	68	V(ucl_n00760•xopa1•u1)	voltage
+	69	V(gnd_float•xopa2•u1)	voltage
+	70	V(vcc_buf•xopa2•u1)	voltage
+	71	V(vee_buf•xopa2•u1)	voltage
+	72	V(inp1•xopa2•u1)	voltage
+	73	V(n04)	voltage
+	74	V(inn1•xopa2•u1)	voltage
+	75	V(inp2•xopa2•u1)	voltage
+	76	V(inp_cmrr•xopa2•u1)	voltage
+	77	V(7•x_u12•xopa2•u1)	voltage
+	78	V(8•x_u12•xopa2•u1)	voltage
+	79	V(3•x_u12•xopa2•u1)	voltage
+	80	V(6•x_u12•xopa2•u1)	voltage
+	81	V(4•x_u12•xopa2•u1)	voltage
+	82	V(5•x_u12•xopa2•u1)	voltage
+	83	V(inn2•xopa2•u1)	voltage
+	84	V(n02795•xopa2•u1)	voltage
+	85	V(n027510•xopa2•u1)	voltage
+	86	V(inn3•xopa2•u1)	voltage
+	87	V(n01819•xopa2•u1)	voltage
+	88	V(n013640•xopa2•u1)	voltage
+	89	V(vdd•x_u9•xopa2•u1)	voltage
+	90	V(n08751•xopa2•u1)	voltage
+	91	V(n08964•xopa2•u1)	voltage
+	92	V(n13447•xopa2•u1)	voltage
+	93	V(over_clamp•xopa2•u1)	voltage
+	94	V(3•x_u1•xopa2•u1)	voltage
+	95	V(30•x_u1•xopa2•u1)	voltage
+	96	V(3•x_u2•xopa2•u1)	voltage
+	97	V(30•x_u2•xopa2•u1)	voltage
+	98	V(vsense•xopa2•u1)	voltage
+	99	V(3•x_u3•xopa2•u1)	voltage
+	100	V(30•x_u3•xopa2•u1)	voltage
+	101	V(3•x_u5•xopa2•u1)	voltage
+	102	V(30•x_u5•xopa2•u1)	voltage
+	103	V(p0z•xopa2•u1)	voltage
+	104	V(p0zp1•xopa2•u1)	voltage
+	105	V(3•x_u6•xopa2•u1)	voltage
+	106	V(30•x_u6•xopa2•u1)	voltage
+	107	V(claw_clamp•xopa2•u1)	voltage
+	108	V(3•x_u7•xopa2•u1)	voltage
+	109	V(30•x_u7•xopa2•u1)	voltage
+	110	V(cl_clamp•xopa2•u1)	voltage
+	111	V(3•x_u8•xopa2•u1)	voltage
+	112	V(30•x_u8•xopa2•u1)	voltage
+	113	V(n107583•xopa2•u1)	voltage
+	114	V(n127440•xopa2•u1)	voltage
+	115	V(n118253•xopa2•u1)	voltage
+	116	V(vclp•xopa2•u1)	voltage
+	117	V(uz_n36964•xopa2•u1)	voltage
+	118	V(uz_vzo_1•xopa2•u1)	voltage
+	119	V(uz_vzo_2•xopa2•u1)	voltage
+	120	V(uz_n37614•xopa2•u1)	voltage
+	121	V(uz_vzo_3•xopa2•u1)	voltage
+	122	V(uz_vzo_4•xopa2•u1)	voltage
+	123	V(uz_n45387•xopa2•u1)	voltage
+	124	V(uz_n45507•xopa2•u1)	voltage
+	125	V(vimon•xopa2•u1)	voltage
+	126	V(n105089•xopa2•u1)	voltage
+	127	V(net1•x_u11•xopa2•u1)	voltage
+	128	V(net2•x_u11•xopa2•u1)	voltage
+	129	V(uvcl_n498511•xopa2•u1)	voltage
+	130	V(uvcl_n50894•xopa2•u1)	voltage
+	131	V(ucl_n50037•xopa2•u1)	voltage
+	132	V(ucl_n01131•xopa2•u1)	voltage
+	133	V(ucl_n01226•xopa2•u1)	voltage
+	134	V(ucl_n00774•xopa2•u1)	voltage
+	135	V(ucl_n00760•xopa2•u1)	voltage
+	136	I(E1•X_UZ_UAMP2•XOPA2•U1)	current
+	137	I(E1•X_UZ_UAMP1•XOPA2•U1)	current
+	138	I(ETHD•XOPA2•U1)	current
+	139	I(EVCVS•X_U10•XOPA2•U1)	current
+	140	I(ERES•X_U8•XOPA2•U1)	current
+	141	I(VSENSE•X_U8•XOPA2•U1)	current
+	142	I(ERES•X_U7•XOPA2•U1)	current
+	143	I(VSENSE•X_U7•XOPA2•U1)	current
+	144	I(ERES•X_U6•XOPA2•U1)	current
+	145	I(VSENSE•X_U6•XOPA2•U1)	current
+	146	I(ERES•X_U5•XOPA2•U1)	current
+	147	I(VSENSE•X_U5•XOPA2•U1)	current
+	148	I(ERES•X_U3•XOPA2•U1)	current
+	149	I(VSENSE•X_U3•XOPA2•U1)	current
+	150	I(ERES•X_U2•XOPA2•U1)	current
+	151	I(VSENSE•X_U2•XOPA2•U1)	current
+	152	I(ERES•X_U1•XOPA2•U1)	current
+	153	I(VSENSE•X_U1•XOPA2•U1)	current
+	154	I(E1•X_UPSRR•XOPA2•U1)	current
+	155	I(EGND•XOPA2•U1)	current
+	156	I(E1•X_UZ_UAMP2•XOPA1•U1)	current
+	157	I(E1•X_UZ_UAMP1•XOPA1•U1)	current
+	158	I(ETHD•XOPA1•U1)	current
+	159	I(EVCVS•X_U10•XOPA1•U1)	current
+	160	I(ERES•X_U8•XOPA1•U1)	current
+	161	I(VSENSE•X_U8•XOPA1•U1)	current
+	162	I(ERES•X_U7•XOPA1•U1)	current
+	163	I(VSENSE•X_U7•XOPA1•U1)	current
+	164	I(ERES•X_U6•XOPA1•U1)	current
+	165	I(VSENSE•X_U6•XOPA1•U1)	current
+	166	I(ERES•X_U5•XOPA1•U1)	current
+	167	I(VSENSE•X_U5•XOPA1•U1)	current
+	168	I(ERES•X_U3•XOPA1•U1)	current
+	169	I(VSENSE•X_U3•XOPA1•U1)	current
+	170	I(ERES•X_U2•XOPA1•U1)	current
+	171	I(VSENSE•X_U2•XOPA1•U1)	current
+	172	I(ERES•X_U1•XOPA1•U1)	current
+	173	I(VSENSE•X_U1•XOPA1•U1)	current
+	174	I(E1•X_UPSRR•XOPA1•U1)	current
+	175	I(EGND•XOPA1•U1)	current
+	176	I(VRO1•X_U11•XOPA2•U1)	current
+	177	I(VRO1•X_U11•XOPA1•U1)	current
+	178	I(H_UZ_H1•X_UZ_H1•XOPA2•U1)	current
+	179	I(VH_UZ_H1•X_UZ_H1•XOPA2•U1)	current
+	180	I(H_UZ_H1•X_UZ_H1•XOPA1•U1)	current
+	181	I(VH_UZ_H1•X_UZ_H1•XOPA1•U1)	current
+	182	I(E_UCL_E2•XOPA2•U1)	current
+	183	I(E_UCL_E1•XOPA2•U1)	current
+	184	I(E_UZ_E1•XOPA2•U1)	current
+	185	I(EBUF•X_U9•XOPA2•U1)	current
+	186	I(E_ECMRR•XOPA2•U1)	current
+	187	I(E3•X_U12•XOPA2•U1)	current
+	188	I(E2•X_U12•XOPA2•U1)	current
+	189	I(E1•X_U12•XOPA2•U1)	current
+	190	I(E_E2•XOPA2•U1)	current
+	191	I(E_E1•XOPA2•U1)	current
+	192	I(E_UCL_E2•XOPA1•U1)	current
+	193	I(E_UCL_E1•XOPA1•U1)	current
+	194	I(E_UZ_E1•XOPA1•U1)	current
+	195	I(EBUF•X_U9•XOPA1•U1)	current
+	196	I(E_ECMRR•XOPA1•U1)	current
+	197	I(E3•X_U12•XOPA1•U1)	current
+	198	I(E2•X_U12•XOPA1•U1)	current
+	199	I(E1•X_U12•XOPA1•U1)	current
+	200	I(E_E2•XOPA1•U1)	current
+	201	I(E_E1•XOPA1•U1)	current
+	202	I(V2)	current
+	203	I(V1)	current
+	204	I(V_UCL_VCLN•XOPA2•U1)	current
+	205	I(V_UCL_VCLP•XOPA2•U1)	current
+	206	I(V_UVCL_VCLO2•XOPA2•U1)	current
+	207	I(V_UVCL_VCLO1•XOPA2•U1)	current
+	208	I(V_V4•XOPA2•U1)	current
+	209	I(V_V1•XOPA2•U1)	current
+	210	I(V_VOS•XOPA2•U1)	current
+	211	I(V_UCL_VCLN•XOPA1•U1)	current
+	212	I(V_UCL_VCLP•XOPA1•U1)	current
+	213	I(V_UVCL_VCLO2•XOPA1•U1)	current
+	214	I(V_UVCL_VCLO1•XOPA1•U1)	current
+	215	I(V_V4•XOPA1•U1)	current
+	216	I(V_V1•XOPA1•U1)	current
+	217	I(V_VOS•XOPA1•U1)	current
+	218	V(d1•x_ud1•xopa1•u1#internal)	voltage
+	219	V(d1•x_ud1•xopa1•u1#current)	voltage
+	220	V(d1•x_ud2•xopa1•u1#internal)	voltage
+	221	V(d1•x_ud2•xopa1•u1#current)	voltage
+	222	V(d1•x_ud3•xopa1•u1#internal)	voltage
+	223	V(d1•x_ud3•xopa1•u1#current)	voltage
+	224	V(d1•x_ud4•xopa1•u1#internal)	voltage
+	225	V(d1•x_ud4•xopa1•u1#current)	voltage
+	226	V(dpassb•x_u11•xopa1•u1#internal)	voltage
+	227	V(dblockb•x_u11•xopa1•u1#internal)	voltage
+	228	V(dblocktop•x_u11•xopa1•u1#internal)	voltage
+	229	V(dpasstop•x_u11•xopa1•u1#internal)	voltage
+	230	V(d1•x_uvcl_uclo2•xopa1•u1#internal)	voltage
+	231	V(d1•x_uvcl_uclo2•xopa1•u1#current)	voltage
+	232	V(d1•x_uvcl_uclo1•xopa1•u1#internal)	voltage
+	233	V(d1•x_uvcl_uclo1•xopa1•u1#current)	voltage
+	234	V(d1•x_ucl_ucl1•xopa1•u1#internal)	voltage
+	235	V(d1•x_ucl_ucl1•xopa1•u1#current)	voltage
+	236	V(d1•x_ucl_ucl2•xopa1•u1#internal)	voltage
+	237	V(d1•x_ucl_ucl2•xopa1•u1#current)	voltage
+	238	V(d1•x_ud1•xopa2•u1#internal)	voltage
+	239	V(d1•x_ud1•xopa2•u1#current)	voltage
+	240	V(d1•x_ud2•xopa2•u1#internal)	voltage
+	241	V(d1•x_ud2•xopa2•u1#current)	voltage
+	242	V(d1•x_ud3•xopa2•u1#internal)	voltage
+	243	V(d1•x_ud3•xopa2•u1#current)	voltage
+	244	V(d1•x_ud4•xopa2•u1#internal)	voltage
+	245	V(d1•x_ud4•xopa2•u1#current)	voltage
+	246	V(dpassb•x_u11•xopa2•u1#internal)	voltage
+	247	V(dblockb•x_u11•xopa2•u1#internal)	voltage
+	248	V(dblocktop•x_u11•xopa2•u1#internal)	voltage
+	249	V(dpasstop•x_u11•xopa2•u1#internal)	voltage
+	250	V(d1•x_uvcl_uclo2•xopa2•u1#internal)	voltage
+	251	V(d1•x_uvcl_uclo2•xopa2•u1#current)	voltage
+	252	V(d1•x_uvcl_uclo1•xopa2•u1#internal)	voltage
+	253	V(d1•x_uvcl_uclo1•xopa2•u1#current)	voltage
+	254	V(d1•x_ucl_ucl1•xopa2•u1#internal)	voltage
+	255	V(d1•x_ucl_ucl1•xopa2•u1#current)	voltage
+	256	V(d1•x_ucl_ucl2•xopa2•u1#internal)	voltage
+	257	V(d1•x_ucl_ucl2•xopa2•u1#current)	voltage
+	258	I(G1•X_UG4•XOPA2•U1)	current
+	259	I(G1•X_UG0•XOPA2•U1)	current
+	260	I(GINN•X_U9•XOPA2•U1)	current
+	261	I(GINP•X_U9•XOPA2•U1)	current
+	262	I(GBIAS•X_U9•XOPA2•U1)	current
+	263	I(G1•X_UG4•XOPA1•U1)	current
+	264	I(G1•X_UG0•XOPA1•U1)	current
+	265	I(GINN•X_U9•XOPA1•U1)	current
+	266	I(GINP•X_U9•XOPA1•U1)	current
+	267	I(GBIAS•X_U9•XOPA1•U1)	current
+	268	I(I2•X_U12•XOPA2•U1)	current
+	269	I(I1•X_U12•XOPA2•U1)	current
+	270	I(I2•X_U12•XOPA1•U1)	current
+	271	I(I1•X_U12•XOPA1•U1)	current
+	272	I(S_UZ_S1•X_UZ_S1•XOPA1•U1)	current
+	273	I(S_UZ_S2•X_UZ_S2•XOPA1•U1)	current
+	274	I(S_UZ_S1•X_UZ_S1•XOPA2•U1)	current
+	275	I(S_UZ_S2•X_UZ_S2•XOPA2•U1)	current
+	276	I(D2•X_U12•XOPA1•U1)	current
+	277	I(D1•X_U12•XOPA1•U1)	current
+	278	I(D2•X_U12•XOPA2•U1)	current
+	279	I(D1•X_U12•XOPA2•U1)	current
+	280	I(L_LCMR•XOPA2•U1)	current
+	281	I(L_LPSR•XOPA2•U1)	current
+	282	I(L_LCMR•XOPA1•U1)	current
+	283	I(L_LPSR•XOPA1•U1)	current
+	284	I(C_UCL_CCL2•XOPA2•U1)	current
+	285	I(C_UCL_CCL1•XOPA2•U1)	current
+	286	I(C_CC2•XOPA2•U1)	current
+	287	I(C_CC1•XOPA2•U1)	current
+	288	I(C_CC•XOPA2•U1)	current
+	289	I(C3•X_U12•XOPA2•U1)	current
+	290	I(C2•X_U12•XOPA2•U1)	current
+	291	I(C1•X_U12•XOPA2•U1)	current
+	292	I(C_CINN•XOPA2•U1)	current
+	293	I(C_CINP•XOPA2•U1)	current
+	294	I(C_UCL_CCL2•XOPA1•U1)	current
+	295	I(C_UCL_CCL1•XOPA1•U1)	current
+	296	I(C_CC2•XOPA1•U1)	current
+	297	I(C_CC1•XOPA1•U1)	current
+	298	I(C_CC•XOPA1•U1)	current
+	299	I(C3•X_U12•XOPA1•U1)	current
+	300	I(C2•X_U12•XOPA1•U1)	current
+	301	I(C1•X_U12•XOPA1•U1)	current
+	302	I(C_CINN•XOPA1•U1)	current
+	303	I(C_CINP•XOPA1•U1)	current
+Binary:
+      @      @      @              @ØÌÑI  @  jñøÿ@%N;;ùÿ@ØÌÑI  @Ÿj¤ûÿ@äÏµoa®ê?äÏµoa®ê?                                   ûÿ@Û±dÐ @      @ç& ûÿ@Ùÿÿÿÿ@      @      @Ház®G@®Gáz®ç?¨Óÿÿÿ@RzÌ„÷ÿ@¨Óÿÿÿ@¨Óÿÿÿ@=ìÿÿÿÿ@      @6ËÖ„÷ÿ@¶qÿÿÿÿ@      @6ËÖ„÷ÿ@ì<Ö„÷ÿ@ì<Ö„÷ÿ@™°Â„÷ÿ@´qÿÿÿÿ@      @Ú–‚÷ÿ@¦)Ôýÿÿ@      @$Ö}‚÷ÿ@A#Ôýÿÿ@      @      @Ÿˆ¢p@$Ö}‚÷ÿ@$Ö}‚÷ÿ@ó~‚÷ÿ@   ïÿ@  jì	 @x¦    @  àöÿ@  jñøÿ@\
+ïøÿ@\
+ïøÿ@  ˜§ßþ@  jñøÿ@^æÕr!@ÌHr•×à?=
+×£p=@®Gázî?×}‚÷ÿ@ QŽ–±@ ì®ëq‘±À     ÀG@     @EÀ      @      @        ØÌÑI  @%Nhñøÿ@%N;;ùÿ@ØÌÑI  @Ÿj¤ûÿ@äÏµoa®ê?äÏµoa®ê?                                   ûÿ@Û±dÐ @      @ç& ûÿ@Ùÿÿÿÿ@      @      @Ház®G@®Gáz®ç?T¨Óÿÿÿ@ÜÖ„÷ÿ@V¨Óÿÿÿ@T¨Óÿÿÿ@=ìÿÿÿÿ@      @6ËÖ„÷ÿ@¶qÿÿÿÿ@      @6ËÖ„÷ÿ@ì<Ö„÷ÿ@ì<Ö„÷ÿ@%TÌ„÷ÿ@µqÿÿÿÿ@      @N ‚÷ÿ@,Ôýÿÿ@      @Ã~‡‚÷ÿ@¹%Ôýÿÿ@      @      @ß•¥p@Ã~‡‚÷ÿ@Ã~‡‚÷ÿ@£›ˆ‚÷ÿ@   ïÿ@%NHì	 @y¦    @  Ðöÿ@%Nhñøÿ@öLïøÿ@öLïøÿ@  ÈŸßþ@%Nhñøÿ@Ùkr!@·š°Oš×à?=
+×£p=@®Gázî?€‡‚÷ÿ@ ¼²Ž–±@ DMëq‘±À     ÀG@     @EÀü]@;Åt¢>  øÊ¿||=                   8Ò^Q¾  P;Ò^Q¾  "Ÿ^Q¾   Ÿ^Q¾  ÎTBÉ±½  fòUÉ±½    @É±=  f*AÉ±=  ò•BÉ±½    @É±½ø\-Ãƒ½÷\-Ãƒ½      Ð<ß¶1UŠ?×<³ÿÿÿ_MÂ½   `jÈ >ø]xit¢>  Â
+}|=                   øå^Q¾  0þå^Q¾  ¬Ï²^Q¾   Ð²^Q¾  ÎTBÉ±½  6)jÉ±½    @É±=  f*AÉ±=  ÀÌVÉ±½    @É±½†mæÑCÃƒ½†mæÑCÃƒ½      Ð<k’SÂ©?×<›     ±=   `’>    Àt¢¾  @‰St¢¾            Àt¢¾            @t¢¾W   ”±@r   ”±À  JcZÏ´½‚¸aÊvt²¾{.xP¤|=s©×5st¢¾                ò´Lg`Ÿy=³Ö‚N%™~½W   ”±@r   ”±À  ¡Ï´½‚¸aÊvt²¾{®xP¤|=s©×5st¢¾                Å‚7g`Ÿy=ù^šN%™v½   6st²> ÒMb`¿                ò´Lg`Ÿy=³Ö‚N%™~=‹œ{(h‡=&a]ßãwi=þœvxP¤|=                Å‚7g`Ÿy=ù^šN%™v=‹œ›(h‡=&aÝÞãwi=þœvxP¤|= j¤ûÿ@™„u¾ÇïB½è& ûÿ@   ½ÇïB½¾Gáz®ç?9—(h‡}½¾Gáz®ç?   (h‡}½Œì­×à?'^Ir•×à?öâq @âQ    @#®Gázî?Å‚7g`Ÿy½UzÌ„÷ÿ@ù^šN%™v½ÿ}‚÷ÿ@  @XS3¾ûë®ëq‘±À  ÀFËt5¾ j¤ûÿ@™„u¾ÇïB½è& ûÿ@   ¿ÇïB½¾Gáz®ç?9—(h‡}½¾Gáz®ç?  `(h‡}½\?3‹”×à?ö±Oš×à?=\q @âQ    @#®Gázî?ò´Lg`Ÿy½ßÖ„÷ÿ@³Ö‚N%™v½´§‡‚÷ÿ@   YS3¾ûCMëq‘±À  @FËt5¾:é}ãëÌ€½¥›Ä °ò=‚¸aÊvt¢>‚¸aÊvt¢>ü©ñÒMbP?±ŸÍ€½¥›Ä °ò=‚¸aÊvt¢>‚¸aÊvt¢>ü©ñÒMbP?{®Gáz„?{®Gáz„?{®Gáz„?{®Gáz„?‚šÑþ™>‚šÑþ™>n­çÂ¨™>n­çÂ¨™>€®Gáz„?€®Gáz„?€®Gáz„?€®Gáz„?     t“½æµKÍ>     t“½æµKÍ>ia€…@µ;	| ‘;@µ;û4<]Æ¹dF²G¹“”Tvlº        # AÂh:# AÂh:/Uö¤R/Ê9úÒž,5Ù¹pö…@µ;ãlª;@µ;¡á–vÆ¹/kìmÌG¹Nû…–lº        # AÂh:# AÂh:/Uö¤R/Ê9úÒž,5Ù¹
