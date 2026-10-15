@@ -645,3 +645,13 @@ G1 IOUTP IOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Idefault,-Idefault)}
 XOPA1 3 2 8 4 1 8 OPA2836_TI_CH
 XOPA2 5 6 8 4 7 8 OPA2836_TI_CH
 .ENDS OPA2836
+
+* QSE RF transformer: coupled-inductor starting model, not a physical part model.
+* Symbol pin order: right top, right bottom, left top, left bottom.
+* Left winding is primary; N is secondary/primary turns ratio.
+* Default: 1:1, 1uH primary, coupling 0.999. No winding loss or capacitance.
+.SUBCKT TRAFO_RF_QSE S1 S2 P1 P2 PARAMS: LP=1u N=1 KC=0.999
+LPRI P1 P2 {LP}
+LSEC S1 S2 {LP*N*N}
+KTRAFO LPRI LSEC {KC}
+.ENDS TRAFO_RF_QSE

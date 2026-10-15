@@ -1,0 +1,16 @@
+ÿØÿÛ«symbol Trafo RF QSE
+  «type: X»
+  «description: Trafo RF QSE»
+  «library file: P:\Landell\Arquivos QSpice\Bibliotecas e Modelos\Landell_QSPICE.lib»
+  «shorted pins: false»
+  «line (50,100) (50,-600) 7 0 0x1000000 -1 -1»
+  «line (-50,100) (-50,-600) 7 0 0x1000000 -1 -1»
+  «coil (-300,100) (-50,-600) 0 0 0 0x1000000 -1 -1»
+  «coil (300,100) (50,-600) 0 0 0 0x1000000 -1 -1»
+  «text (0,370) 0.735 0 0 0x0 -1 -1 "X1"»
+  «text (0,220) 0.681 0 0 0x0 -1 -1 "TRAFO_RF_QSE"»
+  «pin (200,100) (0,0) 1 0 0 0x0 -1 ""»
+  «pin (200,-600) (0,0) 1 0 0 0x0 -1 ""»
+  «pin (-200,100) (0,0) 1 0 0 0x0 -1 ""»
+  «pin (-200,-600) (0,0) 1 0 0 0x0 -1 ""»
+»

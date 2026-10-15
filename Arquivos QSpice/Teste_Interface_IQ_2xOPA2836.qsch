@@ -648,7 +648,7 @@
       «pin (0,-200) (0,0) 1 64 0 0x0 -1 "-"»
     »
   »
-  «component (2300,4100) 0 0
+  «component (2200,4000) 0 0
     «symbol Vpulse
       «type: V»
       «description: Independent Voltage Source»
@@ -737,8 +737,8 @@
   «net (3200,-900) 1 14 0 "I-"»
   «net (4200,-900) 1 14 0 "Q+"»
   «net (4900,-1700) 1 14 0 "Q-"»
-  «net (2300,3900) 1 13 0 "GND"»
-  «net (2300,4300) 1 14 0 "QSE_S0"»
+  «net (2200,3800) 1 13 0 "GND"»
+  «net (2200,4200) 1 14 0 "QSE_S0"»
   «net (1200,3600) 1 13 0 "GND"»
   «net (1200,4000) 1 14 0 "QSE_S1"»
   «junction (7600,-600)»
