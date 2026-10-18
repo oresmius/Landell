@@ -726,3 +726,94 @@ D4 6 0 MD3
 *   RS=0 BV=infinite IBV=1mA
 .MODEL MD3 D IS=1e-10 N=0.4
 .ENDS
+
+* ============================================================================
+* L78M05 - unofficial behavioral approximation created for Landell, 2026-10-18.
+* This is NOT an STMicroelectronics model or a transistor-level macromodel.
+* Intended use: DC bias supply and slow functional TX/RX power switching.
+* Reference: ST L78M datasheet DS0425 Rev 24, September 2020, table 3.
+* https://www.st.com/resource/en/datasheet/l78m.pdf
+*
+* Symbol Type X; subcircuit name L78M05.
+* Terminal order matches L78M05.qsym: VI, VO, GND.
+* These are simulation ports, NOT physical TO-220 lead numbers.
+*
+* Parameters and evidence boundaries:
+*   VREG=5: nominal regulated output voltage (V).
+*   VDROP=2: fixed typical dropout approximation (V); no load/temp dependence.
+*   ROUT=0.1: assumed regulation slope (ohm), NOT a measured output impedance.
+*             In regulation, VO = VREG - Ipass*ROUT.
+*   ILIM=0.5: artificial current ceiling at the device's rated output (A).
+*             This is NOT a model of its actual short-circuit/SOA protection.
+*   IQ=6m: conservative powered quiescent-current approximation (A).
+*          6 mA is the datasheet maximum, not a typical-current fit.
+*          The linear IQ ramp below VREG+VDROP is a modeling assumption.
+*   RLEAK=100Meg: numerical DC reference for an otherwise unloaded output.
+*                 Its leakage is artificial, not a device specification.
+*
+* Operation:
+*   - Output target is min(VREG, max(0, VI-GND-VDROP)).
+*   - BPASS transfers nonnegative current from VI to VO, limited to ILIM.
+*     Output load/charging current therefore also flows at the input terminal.
+*   - The regulator does not actively sink output current. When VI falls,
+*     an external output capacitor discharges through its load and RLEAK.
+*   - No internal energy storage; use external capacitors as in the circuit.
+*
+* Not modeled: real startup/transient timing, loop dynamics/stability, PSRR,
+* noise, temperature, self-heating, production tolerance, actual protection,
+* reverse current from VO to VI, or damage under reverse/overvoltage conditions.
+* Use with nonnegative VI/VO relative to GND and positive ROUT/ILIM/RLEAK.
+* Structural checks only; QSPICE simulation and hardware validation pending.
+* ============================================================================
+
+.SUBCKT L78M05 VI VO GND PARAMS: VREG=5 VDROP=2 ROUT=0.1 ILIM=0.5 IQ=6m RLEAK=100Meg
+BPASS VI VO I={min(ILIM,max(0,(min(VREG,max(0,V(VI,GND)-VDROP))-V(VO,GND))/ROUT))}
+BIQ VI GND I={IQ*min(1,max(0,V(VI,GND)/(VREG+VDROP)))}
+RREF VO GND {RLEAK}
+.ENDS L78M05
+
+* ============================================================================
+* BS170P - official Diodes/Zetex SPICE subcircuit, imported 2026-10-18.
+* Source: https://www.diodes.com/spice/download/4537/BS170P.spice.txt
+* Model and manufacturer notice below retained without parameter changes.
+* Symbol Type X; subcircuit name BS170P; terminal order: Drain, Gate, Source.
+* The source node names 3, 4, 5 are NOT physical package lead numbers.
+* This is specifically the Diodes/Zetex BS170P implementation.
+* No self-heating or thermal coupling between separate devices is modeled.
+* Temperature dependence and RF accuracy have not been validated for Landell.
+* QSPICE runtime testing is pending.
+* ============================================================================
+* DIODES INCORPORATED AND ITS AFFILIATED COMPANIES AND SUBSIDIARIES (COLLECTIVELY, "DIODES")
+* PROVIDE THESE SPICE MODELS AND DATA (COLLECTIVELY, THE "SM DATA") "AS IS" AND WITHOUT ANY
+* REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTY OF MERCHANTABILITY
+* OR FITNESS FOR A PARTICULAR PURPOSE, ANY WARRANTY ARISING FROM COURSE OF DEALING OR COURSE OF
+* PERFORMANCE, OR ANY WARRANTY THAT ACCESS TO OR OPERATION OF THE SM DATA WILL BE UNINTERRUPTED,
+* OR THAT THE SM DATA OR ANY SIMULATION USING THE SM DATA WILL BE ERROR FREE. TO THE MAXIMUM
+* EXTENT PERMITTED BY LAW, IN NO EVENT WILL DIODES BE LIABLE FOR ANY DIRECT OR INDIRECT,
+* SPECIAL, INCIDENTAL, PUNITIVE OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR IN CONNECTION WITH
+* THE PRODUCTION OR USE OF SM DATA, HOWEVER CAUSED AND UNDER WHATEVER CAUSE OF ACTION OR THEORY
+* OF LIABILITY BROUGHT (INCLUDING, WITHOUT LIMITATION, UNDER ANY CONTRACT, NEGLIGENCE OR OTHER
+* TORT THEORY OF LIABILITY), EVEN IF DIODES HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES,
+* AND DIODES' TOTAL LIABILITY (WHETHER IN CONTRACT, TORT OR OTHERWISE) WITH REGARD TO THE SM
+* DATA WILL NOT, IN THE AGGREGATE, EXCEED ANY SUMS PAID BY YOU TO DIODES FOR THE SM DATA.
+
+
+
+*ZETEX BS170P Spice Model v1.1 Last Revised 9/21/20
+    *
+    .SUBCKT BS170P 3 4 5
+    *                D G S
+    M1 3 2 5 5 N3306M
+    RG 4 2 270
+    RL 3 5 1.2E8
+    C1 2 5 28E-12
+    C2 3 2 3E-12
+    D1 5 3 N3306D
+    *
+    .MODEL N3306M NMOS VTO=1.824 RS=1.572 RD=1.436 IS=1E-15 KP=.1233
+    +CBD=35E-12 PB=1
+    .MODEL N3306D D IS=5E-12 RS=.768
+    .ENDS BS170P
+    *
+    *$
+    *
