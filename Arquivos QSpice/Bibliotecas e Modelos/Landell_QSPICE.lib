@@ -817,3 +817,121 @@ RREF VO GND {RLEAK}
     *
     *$
     *
+
+* ============================================================================
+* BC337-25 - official Diotec SPICE subcircuit, imported 2026-10-20.
+* Source: https://diotec.com/request/spice/bc337-25.zip
+* Original file: bc337-25_spice.lib; manufacturer notice retained below.
+* QSPICE compatibility: removed unsupported Bvcbo={Vcbo} and type=npn from
+* the .model line after user-run warnings. NPN is already the model type.
+* Vcbo=50 remains in the parameter list as a rating, with no model effect.
+* All other manufacturer parameter values and equations are unchanged.
+* The ZIP's bc337-25.asy SpiceLine repeats the same 15 parameter defaults
+* declared in this subcircuit. All are included here; no symbol file is needed
+* to supply simulation parameters, and no external model file is required.
+* Symbol Type X; subcircuit name BC337-25; terminal order: C, B, E.
+* The default hfe=400 is the manufacturer's model value, not a guaranteed
+* gain for every BC337-25 device. This is a simplified parameter-based model.
+* QSPICE rerun after this compatibility edit and PA bias validation pending.
+* ============================================================================
+
+* SPICE model NPN bipolar transistor ***BC337-25***
+* Use the symbol file ***bc337-25.asy***
+*
+* (c) Diotec Semiconductor AG
+* www.diotec.com
+* 2017-12-13
+*
+*********************************************************
+* This model is for simulation purposes only. It does   *
+* not replace reviewing of the data sheet nor real life *
+* testing of the part inside the application.           *
+*********************************************************
+*
+.subckt BC337-25  C  B  E  params: Vceo=45 Vcbo=50 Vebo=5 Ic=800m hfe=400 Ices=2n Vbe=1200m ft=100Meg Ccbo=3.5p Cebo=9p Rc=1 Rb=.1 Re=.1 Eg=1.11 Xti=3
+
+* Above values are an example for the ***BC337-25***. Using the
+* above symbol file allows for direct insertion of other values
+* according to these data sheet parameters:
+*
+* Vceo    	Collector Emitter voltage, Base open
+* Vcbo		Collector Base voltage, Emitter open
+* Vebo    	Emitter Base voltage, Collector open
+* Ic		DC Collector current
+* hfe		Max DC current gain
+* Ices		Collector Emitter cut-off current
+* Vbe		Min Base Emitter voltage
+* ft		Gain bandwidth product
+* Ccbo		Typ. Collector Base capacitance
+* Cebo		Typ. Emitter Base capacitance
+* Rc/Rb/Re	Fixed values
+*
+* Activation energy: Eg=1.11 for Si (npn) transistor
+* Sat.-current temp. exp: Xti=3 for Si (npn) transistor
+
+Q  C B E  Transistor
+
+.model Transistor NPN(Is={Ices/2} Bf={hfe} Bvbe={-Vebo} Vceo={Vceo} Vje={Vbe} Tf={1/(2*pi*ft)} Eg={Eg} Xti={Xti} Icrating={Ic} Cjc={Ccbo*2} Cje={Cebo*2} Rc={Rc} Rb={Rb} Re={Re} mfg=Diotec)
+
+.ends
+
+* ============================================================================
+* 1N4148 - official Nexperia SPICE subcircuit, imported 2026-10-20.
+* Source: https://assets.nexperia.com/documents/spice-model/1N4148.txt
+* Manufacturer model below retained without parameter or topology changes.
+* Symbol Type X; subcircuit name 1N4148.
+* Simulation terminal order: 1 Anode, 2 Cathode (not package pin numbers).
+* The internal diode model is local to this subcircuit.
+* Self-contained; no symbol parameters or external model files required.
+* QSPICE runtime testing is pending.
+* ============================================================================
+
+***********************************************************
+*
+* 1N4148
+*
+* Nexperia
+*
+* High-speed diodes
+* IFmax = 200mA
+* VRmax = 100V
+* VFmax = 1V      @ IF = 10mA
+* IRmax = 25nA    @ VR = 20V
+*
+*
+*
+* Package pinning does not match Spice model pinning.
+* Package: SOD27 (DO-35)
+*
+* Package Pin 1: Cathode
+* Package Pin 2: Anode
+*
+*
+*
+* Extraction date (week/year): #
+* Simulator: PSPICE
+*
+***********************************************************
+*
+* The resistor R1 does not reflect
+* a physical device. Instead it
+* improves modeling in the reverse
+* mode of operation.
+*
+.SUBCKT 1N4148 1 2
+R1 1 2 5.827E+9
+D1 1 2 1N4148
+*
+.MODEL 1N4148 D
++ IS = 4.352E-9
++ N = 1.906
++ BV = 110
++ IBV = 0.0001
++ RS = 0.6458
++ CJO = 7.048E-13
++ VJ = 0.869
++ M = 0.03
++ FC = 0.5
++ TT = 3.48E-9
+.ENDS
+*
