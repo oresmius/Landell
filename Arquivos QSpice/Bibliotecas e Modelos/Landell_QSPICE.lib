@@ -935,3 +935,49 @@ D1 1 2 1N4148
 + TT = 3.48E-9
 .ENDS
 *
+
+* ============================================================================
+* Trafo_PA_Entrada - estimated linear model of QRP Labs T201, 2026-10-21.
+* Created for Landell; NOT a manufacturer-supplied or measured transformer model.
+* Source winding data: Documentos/PA_Assembly_200.pdf, section 3.5, pp. 11-12.
+* Original core: BN61-2402; primary 6 turns, bifilar secondaries 3 + 3 turns.
+*
+* Inductance reference, used as an estimate for this core size/material:
+* https://fair-rite.com/product/multi-aperture-cores-2861002402/
+* Fair-Rite specifies AL >= 160 nH/turn^2, tested at 10 kHz, low flux.
+* Taking this catalog minimum as a starting assumption gives LP=36*160nH
+* = 5.76uH and each secondary half LS=9*160nH=LP/4=1.44uH.
+* These are NOT measured PA values or guaranteed inductances at RF.
+*
+* Symbol Type X; subcircuit name Trafo_PA_Entrada.
+* Terminal order matches Trafo_PA.qsym:
+*   PRI1 PRI2 SEC1 SEC2 SEC3; SEC2 is the center tap, normally DRIVER_BIAS.
+* Dotted ends: PRI1 and SEC1. With positive mutual coupling, the second
+* half is oriented SEC2 -> SEC3. Thus SEC1 and SEC3 carry opposite RF
+* polarities relative to SEC2. Ideal turns ratio is 6:3:3, or 1:1 end-to-end.
+*
+* Adjustable assumptions, NOT core/winding specifications:
+*   KC=0.999: same strong coupling for all three winding pairs.
+*   RP=0.1 ohm: primary winding series resistance.
+*   RS=0.05 ohm: series resistance of EACH secondary half.
+* Finite resistance permits a DC path without an ideal zero-resistance loop.
+* No internal ground or primary-secondary DC connection is added.
+*
+* Not modeled: core loss, frequency-dependent permeability/resistance,
+* winding capacitance, interwinding capacitance, saturation or temperature.
+* Leakage is represented only through KC. Losses are only the stated RP/RS.
+* This model is for initial functional tests; RF accuracy is unvalidated.
+* QSPICE runtime testing is pending and remains user-run.
+* ============================================================================
+
+.SUBCKT Trafo_PA_Entrada PRI1 PRI2 SEC1 SEC2 SEC3 PARAMS: LP=5.76u KC=0.999 RP=0.1 RS=0.05
+RPRI PRI1 P_DOT {RP}
+LPRI P_DOT PRI2 {LP}
+RSECA SEC1 SA_DOT {RS}
+LSECA SA_DOT SEC2 {LP/4}
+RSECB SEC2 SB_DOT {RS}
+LSECB SB_DOT SEC3 {LP/4}
+KPA LPRI LSECA {KC}
+KPB LPRI LSECB {KC}
+KAB LSECA LSECB {KC}
+.ENDS Trafo_PA_Entrada
