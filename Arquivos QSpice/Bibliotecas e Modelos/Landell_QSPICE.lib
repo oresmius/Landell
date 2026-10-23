@@ -981,3 +981,75 @@ KPA LPRI LSECA {KC}
 KPB LPRI LSECB {KC}
 KAB LSECA LSECB {KC}
 .ENDS Trafo_PA_Entrada
+
+* ============================================================================
+* Trafo_Driver_Saida - estimated linear model of QRP Labs T202, 2026-10-22.
+* Created for Landell; NOT a manufacturer-supplied or measured transformer model.
+* Source winding data: Documentos/PA_Assembly_200.pdf, section 3.6, pp. 13-14.
+* Original core: BN61-2402; bifilar primary 3 + 3 turns, secondary 5 turns.
+* Uses the same inductance-reference assumption as Trafo_PA_Entrada above:
+* https://fair-rite.com/product/multi-aperture-cores-2861002402/
+* AL=160 nH/turn^2 is a catalog minimum at 10 kHz, used as a starting estimate.
+* LPH=9*160nH=1.44uH is the inductance of EACH primary half, not the total.
+* LS=LPH*(5/3)^2=4uH. At perfect coupling the full primary is 4*LPH=5.76uH.
+* These are NOT measured PA values or guaranteed inductances at RF.
+*
+* Symbol Type X; subcircuit name Trafo_Driver_Saida.
+* Terminal order matches Trafo_Driver_Saida.qsym:
+*   PRI1 PRI2 PRI3 SEC1 SEC2; PRI2 is the primary center tap.
+* In the PA, PRI2 receives the driver drain supply; no supply is built in.
+* Dotted ends: PRI1 and SEC1. The lower primary half is oriented PRI2 -> PRI3.
+* Equal/opposite primary-end voltages relative to PRI2 add magnetically.
+* Ideal full-primary to secondary turns ratio: (3+3):5 = 6:5.
+* Balanced DC currents flowing from PRI2 to the primary ends oppose in the core.
+*
+* Adjustable assumptions, NOT core/winding specifications:
+*   KC=0.999: same strong coupling for all three winding pairs.
+*   RP=0.05 ohm: series resistance of EACH primary half, as in T201's 3 turns.
+*   RS=0.0833333333 ohm: estimated 5-turn secondary resistance, scaled from
+*                      the assumed 3-turn resistance by 5/3, same wire basis.
+* Finite winding resistance provides a DC path without ideal zero-ohm loops.
+* Use LPH>0, RP>0, RS>0 and 0<KC<=1; all three inductors share the same core.
+* No internal ground or primary-secondary DC connection is added.
+*
+* Not modeled: core loss, frequency-dependent permeability/resistance,
+* winding/interwinding capacitance, saturation, DC-imbalance effects or heating.
+* Leakage is represented only through KC; losses are only the stated RP/RS.
+* Intended for initial functional tests; RF accuracy is unvalidated.
+* QSPICE runtime testing is pending and remains user-run.
+* ============================================================================
+
+.SUBCKT Trafo_Driver_Saida PRI1 PRI2 PRI3 SEC1 SEC2 PARAMS: LPH=1.44u KC=0.999 RP=0.05 RS=0.0833333333
+RPRIA PRI1 PA_DOT {RP}
+LPRIA PA_DOT PRI2 {LPH}
+RPRIB PRI2 PB_DOT {RP}
+LPRIB PB_DOT PRI3 {LPH}
+RSEC SEC1 S_DOT {RS}
+LSEC S_DOT SEC2 {LPH*25/9}
+KPAB LPRIA LPRIB {KC}
+KPAS LPRIA LSEC {KC}
+KPBS LPRIB LSEC {KC}
+.ENDS Trafo_Driver_Saida
+
+* ============================================================================
+* POT - generic linear potentiometer for Landell, 2026-10-23.
+* Symbol Type X; subcircuit name POT; terminal order matches Pot.qsym:
+*   A = upper end, B = lower end, W = wiper.
+* Instance parameters: RT=4.7k POS=0.5 (defaults shown).
+* RT is the total A-to-B track resistance in ohms; use RT > 0.
+* POS is the fractional wiper position, nominally from 0 to 1:
+*   POS=0 places W at B; POS=1 places W at A; POS=0.5 is the midpoint.
+* R(A,W)=RT*(1-P); R(W,B)=RT*P; their sum remains RT.
+* P is internally clamped to [1e-6, 1-1e-6] to avoid zero-ohm branches
+* at either endpoint and to bound out-of-range POS values.
+* Each endpoint therefore retains 1 ppm of RT (4.7 milliohms at 4.7k).
+* Static linear track only: no contact noise/resistance, parasitics,
+* tolerance, temperature dependence, power limits or mechanical behavior.
+* No internal ground connection. QSPICE runtime testing remains user-run.
+* ============================================================================
+
+.SUBCKT POT A B W PARAMS: RT=4.7k POS=0.5
+.PARAM PINT={min(max(POS,1e-6),1-1e-6)}
+RAW A W {RT*(1-PINT)}
+RWB W B {RT*PINT}
+.ENDS POT
